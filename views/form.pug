@@ -12,8 +12,7 @@ html
             
         h1= `${header}`
         p= `Utilize o formulário abaixo e ${header}`
-        
-    - console.log(formAction)
+
 
     form(action=`${formAction}` method='post')
         p Time: 
@@ -22,12 +21,6 @@ html
             input(type="text" name='year' value=field2)
         p Técnico: 
             input(type="text", name="manager" value=field3)
-            input(type="text", name="players", value=`${[]}`, hidden)
+            //- input(type="text", name="players", value=`${[]}`, hidden)
         input(type="submit", value="Enviar Time")
 
-
-    //- - let thisFormAction = formAction
-    //- form(action=`${formAction}`)
-    //- form(action="thisFormAction")
-    //-     input
-    //-     input 

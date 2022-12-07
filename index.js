@@ -82,8 +82,12 @@ app.get("/team/:index", (req, res) => {
 
 // Create
 app.post("/submit", (req, res) => {
-  console.log(req.body);
-  internalTeamsList.push(req.body);
+  let newTeam = req.body;
+  console.log(newTeam);
+  newTeam.players = [];
+
+  internalTeamsList.push(newTeam);
+
   res.redirect("/teams");
 });
 
