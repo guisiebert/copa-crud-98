@@ -1,0 +1,33 @@
+html
+    head 
+        title Formulário de Times 
+    body 
+        nav
+            li  
+                a(href="/")  Home
+            li
+                a(href="/teams")  Lista
+            li 
+                a(href="/form")  Add Time 
+            
+        h1= `${header}`
+        p= `Utilize o formulário abaixo e ${header}`
+        
+    - console.log(formAction)
+
+    form(action=`${formAction}` method='post')
+        p Time: 
+            input(type='text' name='teamname' value=field1)
+        p Ano: 
+            input(type="text" name='year' value=field2)
+        p Técnico: 
+            input(type="text", name="manager" value=field3)
+            input(type="text", name="players", value="", hidden)
+        input(type="submit", value="Enviar Time")
+
+
+    //- - let thisFormAction = formAction
+    //- form(action=`${formAction}`)
+    //- form(action="thisFormAction")
+    //-     input
+    //-     input 

@@ -1,0 +1,41 @@
+html 
+    head 
+        title Lista de Times 
+    body 
+        nav
+            li  
+                a(href="/")  Home
+            li
+                a(href="/teams")  Lista
+            li 
+                a(href="/form")  Add Time 
+            
+        h1 Lista de Times 
+        p Encontre uma lista completa de todos os times em nosso banco de dados
+        table(style='width:100%', border='1') 
+            tr
+                th Time 
+                th Ano 
+                th Técnico 
+                th Jogadores 
+                th Ver
+                th Editar
+                th Remover
+                each team, index  in internalTeamsList
+                    tr
+                        td= internalTeamsList[index].teamname
+                        td= internalTeamsList[index].year
+                        td= internalTeamsList[index].manager
+                        td= `${internalTeamsList[index].players.length} cadastrados`
+                        th  
+                            a(href=`/team/${index}`) 
+                                button Ver Time
+                        th  
+                            a(href=`/edit/${index}`) 
+                                button Editar
+                        th  
+                            a(href=`/delete/${index}`)
+                                button Remover 
+        br
+        a(href="/form")
+            button Add Time  

@@ -1,0 +1,41 @@
+html 
+    head   
+        title= `Detalhes: ${team}`
+    body 
+        nav
+            li  
+                a(href="/")  Home
+            li
+                a(href="/teams")  Lista
+            li 
+                a(href="/form")  Add Time 
+
+
+        h1= `${team}: Detalhes do Time`
+        ul 
+            li=`Ano: ${year}`
+            li=`Técnico: ${manager}`
+
+        h2= `Lista de ${players.length} Jogadores`
+        table(style="width:70%", border="1")
+            tr
+                th Nome do Jogador 
+                //- th Editar 
+                th Remover
+                each player, index  in players 
+                    tr
+                        td=player  
+                        //- th  
+                        //-     button Editar
+                        th 
+                            a(href=`/delete-player/${teamindex}/${index}`) 
+                                button Remover 
+        
+
+        h4 Adicionar novo jogador
+        form(action=`/new-player/${teamindex}` method='post')
+            p Nome do Jogador: 
+                input(type="text", name="newplayer")
+            input(type="submit", value="Salvar")
+
+                
