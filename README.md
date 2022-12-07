@@ -1,3 +1,3 @@
-# Copa 94
+# Copa Crud
 
 ## Remembering Brasfoot times
