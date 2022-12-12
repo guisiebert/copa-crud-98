@@ -10,20 +10,8 @@ app.set("views", "./views");
 app.set("view engine", "pug");
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const internalTeamsList = [
-  {
-    teamname: "Brazil",
-    year: 1998,
-    manager: "Zagalo",
-    players: ["Taffarel", "Ronaldo", "Cafu"],
-  },
-  {
-    teamname: "Scotland",
-    year: 1998,
-    manager: "Craig Brown",
-    players: ["Jim Leighton", "Colin Calderwood", "Colin Hendry", "Tom Boyd"],
-  },
-];
+var teamsList = fs.readFileSync("./teams.json", "utf-8");
+teamsList = JSON.parse(teamsList);
 
 // ===========================
 // VIEWS
@@ -32,14 +20,14 @@ const internalTeamsList = [
 // View: Home
 app.get("/", (req, res) => {
   res.render("home", {
-    length: internalTeamsList.length,
+    length: teamsList.length,
   });
 });
 
 // View: Teams
 app.get("/teams", (req, res) => {
   res.render("teams", {
-    internalTeamsList,
+    teams: teamsList,
   });
 });
 
@@ -53,25 +41,25 @@ app.get("/form", (req, res) => {
 
 // View: Edit Form
 app.get("/edit/:index", (req, res) => {
-  console.log("going to edit", internalTeamsList[req.params.index].teamname);
+  console.log("going to edit", teamsList[req.params.index].teamname);
 
   res.render("form", {
     header: "Edite um time",
     formAction: `/edit/${req.params.index}`,
-    field1: internalTeamsList[req.params.index].teamname,
-    field2: internalTeamsList[req.params.index].year,
-    field3: internalTeamsList[req.params.index].manager,
+    field1: teamsList[req.params.index].teamname,
+    field2: teamsList[req.params.index].year,
+    field3: teamsList[req.params.index].manager,
   });
 });
 
 // View: Team Details
 app.get("/team/:index", (req, res) => {
   res.render("team", {
-    internalTeamsList,
-    team: internalTeamsList[req.params.index].teamname,
-    year: internalTeamsList[req.params.index].year,
-    manager: internalTeamsList[req.params.index].manager,
-    players: internalTeamsList[req.params.index].players,
+    teamsList,
+    team: teamsList[req.params.index].teamname,
+    year: teamsList[req.params.index].year,
+    manager: teamsList[req.params.index].manager,
+    players: teamsList[req.params.index].players,
     teamindex: req.params.index,
   });
 });
@@ -83,35 +71,30 @@ app.get("/team/:index", (req, res) => {
 // Create
 app.post("/submit", (req, res) => {
   let newTeam = req.body;
-  console.log(newTeam);
   newTeam.players = [];
 
-  internalTeamsList.push(newTeam);
+  teamsList.push(newTeam);
+  console.log(teamsList);
+  fs.writeFileSync("./teams.json", JSON.stringify(teamsList));
 
   res.redirect("/teams");
 });
 
 // Delete
 app.get("/delete/:index", (req, res) => {
-  console.log("Deleting team #", req.params.index);
-  internalTeamsList.splice(req.params.index, 1);
+  teamsList.splice(req.params.index, 1);
+  fs.writeFileSync("./teams.json", JSON.stringify(teamsList));
 
   res.redirect("/teams");
 });
 
 // Update/Edit
 app.post("/edit/:index", (req, res) => {
-  console.log("received info", req.body);
-
-  internalTeamsList[req.params.index].teamname = req.body.teamname;
-  internalTeamsList[req.params.index].year = req.body.year;
-  internalTeamsList[req.params.index].manager = req.body.manager;
+  teamsList[req.params.index].teamname = req.body.teamname;
+  teamsList[req.params.index].year = req.body.year;
+  teamsList[req.params.index].manager = req.body.manager;
 
   res.redirect("/teams");
-});
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
 });
 
 // ===========================
@@ -120,19 +103,24 @@ app.listen(port, () => {
 
 // Create
 app.post("/new-player/:index", (req, res) => {
-  console.log("Params: ", req.params);
-  console.log("Body: ", req.body);
-
-  internalTeamsList[req.params.index].players.push(req.body.newplayer);
+  teamsList[req.params.index].players.push(req.body.newplayer);
+  fs.writeFileSync("./teams.json", JSON.stringify(teamsList));
 
   res.redirect(`/team/${req.params.index}`);
 });
 
 // Delete
 app.get("/delete-player/:team/:player", (req, res) => {
-  console.log(req.params);
-
-  internalTeamsList[req.params.team].players.splice(req.params.player, 1);
+  teamsList[req.params.team].players.splice(req.params.player, 1);
+  fs.writeFileSync("./teams.json", JSON.stringify(teamsList));
 
   res.redirect(`/team/${req.params.team}`);
+});
+
+// ===========================
+// LISTEN:
+// ===========================
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });

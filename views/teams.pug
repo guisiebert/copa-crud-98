@@ -21,12 +21,12 @@ html
                 th Ver
                 th Editar
                 th Remover
-                each team, index  in internalTeamsList
+                each team, index  in teams
                     tr
-                        td= internalTeamsList[index].teamname
-                        td= internalTeamsList[index].year
-                        td= internalTeamsList[index].manager
-                        td= `${internalTeamsList[index].players.length} cadastrados`
+                        td= teams[index].teamname
+                        td= teams[index].year
+                        td= teams[index].manager
+                        td= `${teams[index].players.length} cadastrados`
                         th  
                             a(href=`/team/${index}`) 
                                 button Ver Time
